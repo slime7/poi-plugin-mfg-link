@@ -1,0 +1,24 @@
+{
+  "name": "poi-plugin-mfg-link",
+  "version": "1.0.0",
+  "main": "index.es",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "description": "转发数据到My Fleet Girls.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/slime7/poi-plugin-mfg-link"
+  },
+  "author": {
+    "name": "Slime7",
+    "url": "https://github.com/slime7"
+  },
+  "license": "MIT",
+  "poiPlugin": {
+    "title": "MFG Link",
+    "description": "转发数据到My Fleet Girls.",
+    "icon": "fa/assistive-listening-systems",
+    "apiVer": {"8.0.99": "1.0.0"}
+  }
+}

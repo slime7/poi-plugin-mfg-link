@@ -1,0 +1,2 @@
+# mfg link
+可以不用MyFleetGirls自带的client向MyFleetGirls直接提交游戏数据。
