@@ -117,11 +117,15 @@ export const
     const mapInfo = getStore('info').maps
     let newMapInfo = []
     for (let mapIndex in mapInfo) {
-      newMapInfo.push({
+      let map = {
         id: mapInfo[mapIndex].api_id,
         cleared: !!mapInfo[mapIndex].api_cleared,
-        exboosFlag: !!mapInfo[mapIndex].api_exboos_flag
-      })
+        exbossFlag: !!mapInfo[mapIndex].api_exboss_flag
+      }
+      if (typeof mapInfo[mapIndex].api_defeat_count === 'number') {
+        map.defeatedCount = mapInfo[mapIndex].api_defeat_count
+      }
+      newMapInfo.push(map)
     }
     return ['/post/v1/mapinfo', newMapInfo]
   },
