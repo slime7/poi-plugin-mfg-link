@@ -6,6 +6,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "description": "转发数据到My Fleet Girls.",
+  "keywords": [
+    "kancolle"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/slime7/poi-plugin-mfg-link.git"
@@ -17,7 +20,7 @@
   "license": "MIT",
   "poiPlugin": {
     "title": "MFG Link",
-    "description": "转发数据到My Fleet Girls.",
+    "description": "Send game data to My Fleet Girls.",
     "icon": "fa/assistive-listening-systems",
     "apiVer": {
       "8.0.99": "1.0.2"

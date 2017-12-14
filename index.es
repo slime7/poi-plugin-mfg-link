@@ -26,7 +26,8 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { get } from 'lodash'
 import { Row, Col, Grid, FormGroup, FormControl } from 'react-bootstrap'
-const { config, log, getStore } = window
+const { config, log, getStore, i18n } = window
+const __ = i18n['poi-plugin-mfg-link'].__.bind(i18n['poi-plugin-mfg-link'])
 
 const MFG_HOST = 'https://myfleet.moe'
 let [memberId, mfgPw, nicknameId, nickname] = [
@@ -155,7 +156,7 @@ let handleGameResponse = (e) => {
     mfgReq(['/post/v1/admiral_settings', kcServer, (response) => {
       if (response.ok) {
         authSuccess = true
-        const welcome = `欢迎 ${nickname}，My Fleet Girls Sender 已启动。`
+        const welcome = __('%s, welcome, My Fleet Girls Link has started.', nickname)
         log(welcome)
       }
     }])
@@ -383,7 +384,7 @@ export const
 export const settingsClass = () => (
   <div>
     <MfgConfig
-      label={'MFG Password'}
+      label={__('MFG Password')}
       configName="plugin.poi-plugin-mfg-sender.mfgpw"
       defaultVal=""
     />
