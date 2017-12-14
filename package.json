@@ -1,6 +1,6 @@
 {
   "name": "poi-plugin-mfg-link",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "main": "index.es",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -21,10 +21,7 @@
   "poiPlugin": {
     "title": "MFG Link",
     "description": "Send game data to My Fleet Girls.",
-    "icon": "fa/assistive-listening-systems",
-    "apiVer": {
-      "8.0.99": "1.0.2"
-    }
+    "icon": "fa/assistive-listening-systems"
   },
   "dependencies": {}
 }
