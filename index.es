@@ -139,7 +139,7 @@ let mfgReq = ([path, data, resolve = null]) => {
 
 let handleGameResponse = (e) => {
   let { path, body, postBody } = e.detail ? e.detail : e;
-  let kcServer
+  let kcServer = {}
   if (!!getStore('info').server.id && !initPost) {
     kcServer = {
       number: getStore('info').server.id,

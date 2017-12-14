@@ -44,12 +44,16 @@ export const
     const items = getStore('info').equips
     let newItems = []
     for (let itemId in items) {
-      newItems.push({
+      let item = {
         id: items[itemId].api_id,
         slotitemId: items[itemId].api_slotitem_id,
         locked: !!items[itemId].api_locked,
         level: items[itemId].api_level
-      })
+      }
+      if (items[itemId].api_alv) {
+        item.alv = items[itemId].api_alv
+      }
+      newItems.push(item)
     }
     return ['/post/v1/slotitem', newItems]
   },
