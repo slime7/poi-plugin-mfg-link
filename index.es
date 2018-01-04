@@ -41,7 +41,7 @@ let route = null, constructionData = null
 let lastRequestData = [
   [0, null], // 舰娘总数，最后一舰id
   [0], // 油
-  [0, 0, 0], // 3个远征完成时间
+  [1, 0, 0, 0], // 第一舰队二号位id & 3个远征完成时间
   [0], // 提督经验
   [0, 0, 0, 0], // 维修完成时间
   [0, null] // 装备个数，最后一个装备的id
@@ -77,12 +77,14 @@ let mfgReq = ([path, data, resolve = null]) => {
       lastRequestData[lastRequestDataIndex] = [data.fuel]
       break;
     case '/post/v1/deckport':
-      if (lastRequestData[lastRequestDataIndex][0] === data[1].mission.completeTime
-        && lastRequestData[lastRequestDataIndex][1] === data[2].mission.completeTime
-        && lastRequestData[lastRequestDataIndex][2] === data[3].mission.completeTime) {
+      if (lastRequestData[lastRequestDataIndex][0] === data[0].ships[1]
+        && lastRequestData[lastRequestDataIndex][1] === data[1].mission.completeTime
+        && lastRequestData[lastRequestDataIndex][2] === data[2].mission.completeTime
+        && lastRequestData[lastRequestDataIndex][3] === data[3].mission.completeTime) {
         return
       }
       lastRequestData[lastRequestDataIndex] = [
+        data[0].ships[1],
         data[1].mission.completeTime,
         data[2].mission.completeTime,
         data[3].mission.completeTime
@@ -199,6 +201,13 @@ let handleGameResponse = (e) => {
      */
     case '/kcsapi/api_get_member/mapinfo':
       mfgReq(parseMapinfo())
+      break;
+
+    /**
+     * 舰队编队
+     */
+    case '/kcsapi/api_req_hensei/change':
+      mfgReq(parseDeckport())
       break;
 
     /**
