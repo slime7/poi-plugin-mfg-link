@@ -1,4 +1,4 @@
-const { getStore } = window
+const { getStore } = window;
 
 function formatShip (ship) {
   return {
@@ -24,11 +24,11 @@ function formatShip (ship) {
     sakuteki: ship.api_sakuteki[0],
     lucky: ship.api_lucky[0],
     locked: !!ship.api_locked
-  }
+  };
 }
 export const
   parseMaterial = () => {
-    const material = getStore('info').resources
+    const material = getStore('info.resources');
     return ['/post/v1/material', {
       fuel: material[0],
       ammo: material[1],
@@ -38,55 +38,55 @@ export const
       bucket: material[5],
       develop: material[6],
       revamping: material[7]
-    }]
+    }];
   },
   parseItem = () => {
-    const items = getStore('info').equips
-    let newItems = []
+    const items = getStore('info.equips');
+    let newItems = [];
     for (let itemId in items) {
       let item = {
         id: items[itemId].api_id,
         slotitemId: items[itemId].api_slotitem_id,
         locked: !!items[itemId].api_locked,
         level: items[itemId].api_level
-      }
+      };
       if (items[itemId].api_alv) {
-        item.alv = items[itemId].api_alv
+        item.alv = items[itemId].api_alv;
       }
-      newItems.push(item)
+      newItems.push(item);
     }
-    return ['/post/v1/slotitem', newItems]
+    return ['/post/v1/slotitem', newItems];
   },
   parseShip = () => {
-    const ships = getStore('info').ships
-    let newShips = []
+    const ships = getStore('info.ships');
+    let newShips = [];
     for (let shipId in ships) {
-      newShips.push(formatShip(ships[shipId]))
+      newShips.push(formatShip(ships[shipId]));
     }
-    return ['/post/v2/ship', newShips]
+    return ['/post/v2/ship', newShips];
   },
   parseDeckport = () => {
-    const fleets = getStore('info').fleets
-    let deck = []
+    const fleets = getStore('info.fleets');
+    let deck = [];
     for (let fleet of fleets) {
       let f = {
         id: fleet.api_id,
         name: fleet.api_name,
         ships: fleet.api_ship.filter(x => x !== -1)
-      }
+      };
       if (fleet.api_id !== 1) {
         f.mission = {
           page: fleet.api_mission[0],
           number: fleet.api_mission[1],
           completeTime: fleet.api_mission[2]
-        }
+        };
       }
-      deck.push(f)
+      deck.push(f);
     }
-    return ['/post/v1/deckport', deck]
+    return ['/post/v1/deckport', deck];
   },
   parseBasic = () => {
-    const basic = getStore('info').basic
+    const basic = getStore('info.basic');
     return ['/post/v1/basic', {
       lv: basic.api_level,
       experience: basic.api_experience,
@@ -105,33 +105,33 @@ export const
       kdockCount: basic.api_count_kdock,
       ndockCount: basic.api_count_ndock,
       largeDock: !!basic.api_large_dock
-    }]
+    }];
   },
   parseNdock = () => {
-    const ndock = getStore('info').repairs
+    const ndock = getStore('info.repairs');
     return ['/post/v1/ndock', ndock.map(dock => {
       return {
         id: dock.api_id,
         shipId: dock.api_ship_id,
         completeTime: dock.api_complete_time
-      }
-    })]
+      };
+    })];
   },
   parseMapinfo = () => {
-    const mapInfo = getStore('info').maps
-    let newMapInfo = []
+    const mapInfo = getStore('info.maps');
+    let newMapInfo = [];
     for (let mapIndex in mapInfo) {
       let map = {
         id: mapInfo[mapIndex].api_id,
         cleared: !!mapInfo[mapIndex].api_cleared,
         exbossFlag: !!mapInfo[mapIndex].api_exboss_flag
-      }
+      };
       if (typeof mapInfo[mapIndex].api_defeat_count === 'number') {
-        map.defeatedCount = mapInfo[mapIndex].api_defeat_count
+        map.defeatedCount = mapInfo[mapIndex].api_defeat_count;
       }
-      newMapInfo.push(map)
+      newMapInfo.push(map);
     }
-    return ['/post/v1/mapinfo', newMapInfo]
+    return ['/post/v1/mapinfo', newMapInfo];
   },
   parseMapStart = (mapStart) => {
     return ['/post/v1/map_start', {
@@ -144,16 +144,16 @@ export const
       next: mapStart.api_next,
       bossCellNo: mapStart.api_bosscell_no,
       bossComp: !!mapStart.api_bosscomp
-    }]
+    }];
   },
   parseBattleResult = (battleResult, route) => {
-    let getShip = []
+    let getShip = [];
     if (battleResult.api_get_ship) {
       getShip = {
         id: battleResult.api_get_ship.api_ship_id,
         stype: battleResult.api_get_ship.api_ship_type,
         name: battleResult.api_get_ship.api_ship_name
-      }
+      };
     }
     return ['/post/v1/battle_result', {
       _1: {
@@ -171,23 +171,23 @@ export const
         getShip: getShip
       },
       _2: route
-    }]
+    }];
   },
   parseUpdateShip = (shipData) => {
-    return ['/post/v1/update_ship', shipData.map(ship => formatShip(ship))]
+    return ['/post/v1/update_ship', shipData.map(ship => formatShip(ship))];
   },
   parseMapRoute = (routeData, lastRoute) => {
-    const fleet = getStore('info').fleets[0].api_ship.filter(x => x !== -1)
+    const fleet = getStore('info.fleets[0].api_ship').filter(x => x !== -1);
     return ['/post/v1/map_route', {
       areaId: routeData.api_maparea_id,
       infoNo: routeData.api_mapinfo_no,
       dep: lastRoute.no,
       dest: routeData.api_no,
       fleet: fleet
-    }]
+    }];
   },
   parseQuestList = (quests) => {
-    let questList = []
+    let questList = [];
     for (let quest of quests) {
       if (quest.api_no) {
         questList.push({
@@ -205,13 +205,13 @@ export const
           },
           bonus: !!quest.api_bonus_flag,
           progressFlag: quest.api_progress_flag
-        })
+        });
       }
     }
-    return ['/post/v1/questlist', questList]
+    return ['/post/v1/questlist', questList];
   },
   parseCreateitem = (data, material) => {
-    const flagShip = getStore('info').fleets[0].api_ship[0]
+    const flagShip = getStore('info.fleets[0].api_ship[0]');
     let create = {
       fuel: parseInt(material.api_item1),
       ammo: parseInt(material.api_item2),
@@ -220,22 +220,22 @@ export const
       createFlag: !!data.api_create_flag,
       shizaiFlag: !!data.api_shizai_flag,
       flagship: flagShip
-    }
+    };
     if (create.createFlag) {
-      create.id = data.api_slot_item.api_id
-      create.slotitemId = data.api_slot_item.api_slotitem_id
+      create.id = data.api_slot_item.api_id;
+      create.slotitemId = data.api_slot_item.api_slotitem_id;
     }
-    return ['/post/v1/createitem', create]
+    return ['/post/v1/createitem', create];
   },
   parseDeleteKdock = (getShip, dock) => {
     return ['/post/v1/delete_kdock', {
       kDockId: parseInt(dock.api_kdock_id),
       shipId: getShip.api_ship_id
-    }]
+    }];
   },
   parseKdock = (constructionData) => {
-    const kdock = getStore('info').constructions
-    let kdockData = [], kdockReq = [], result = []
+    const kdock = getStore('info.constructions');
+    let kdockData = [], kdockReq = [], result = [];
     for (let _kdock of kdock) {
       kdockData.push({
         id: _kdock.api_id,
@@ -246,32 +246,32 @@ export const
         ammo: _kdock.api_item2,
         steel: _kdock.api_item3,
         bauxite: _kdock.api_item4
-      })
+      });
       if (_kdock.api_state === 2) {
-        kdockReq.push(kdockData[kdockData.length - 1])
+        kdockReq.push(kdockData[kdockData.length - 1]);
       }
     }
 
     if (!!constructionData) {
-      let constructionTemp = Object.assign({}, constructionData)
+      let constructionTemp = Object.assign({}, constructionData);
       if (constructionTemp.createShip.highspeed) {
-        constructionTemp.resultShip = kdockData[constructionTemp.createShip.kDock - 1].shipId
-        result.push(['/post/v2/createship', constructionTemp])
+        constructionTemp.resultShip = kdockData[constructionTemp.createShip.kDock - 1].shipId;
+        result.push(['/post/v2/createship', constructionTemp]);
       } else {
-        constructionTemp.kDock = kdockData[constructionTemp.createShip.kDock - 1]
-        result.push(['/post/v1/createship', constructionTemp])
+        constructionTemp.kDock = kdockData[constructionTemp.createShip.kDock - 1];
+        result.push(['/post/v1/createship', constructionTemp]);
       }
     }
 
-    result.push(['/post/v1/kdock', kdockReq])
-    return result
+    result.push(['/post/v1/kdock', kdockReq]);
+    return result;
   },
   parseRemodelSlot = (remodelSlotList) => {
-    const remodelShip = getStore('info').fleets[0].api_ship[1]
+    const remodelShip = getStore('info.fleets[0].api_ship[1]');
     let requestData = {
       second: remodelShip,
       list: []
-    }
+    };
     for (let remodelSlot of remodelSlotList) {
       requestData.list.push({
         id: remodelSlot.api_id,
@@ -284,12 +284,12 @@ export const
         revamping: remodelSlot.api_req_remodelkit,
         reqSlotId: remodelSlot.api_req_slot_id,
         slotNum: remodelSlot.api_req_slot_num
-      })
+      });
     }
-    return ['/post/v1/remodel_slot', requestData]
+    return ['/post/v1/remodel_slot', requestData];
   },
   parseMasterRemodel = (remodelDetail, origin) => {
-    const remodelShip = getStore('info').fleets[0].api_ship[1]
+    const remodelShip = getStore('info.fleets[0].api_ship[1]');
     return ['/post/v1/master_remodel', {
       develop: remodelDetail.api_req_buildkit,
       remodel: remodelDetail.api_req_remodelkit,
@@ -300,27 +300,30 @@ export const
       changeFlag: !!remodelDetail.api_change_flag,
       origSlotId: parseInt(origin.api_slot_id),
       secondShipId: remodelShip
-    }]
+    }];
   },
   parseRemodel = (remodel, post) => {
-    return ['/post/v1/remodel', {
+    let remodelData = {
       flag: !!remodel.api_remodel_flag,
       beforeItemId: remodel.api_remodel_id[0],
       afterItemId: remodel.api_remodel_id[1],
       voiceId: remodel.api_voice_id,
-      afterSlot: {
+      useSlotIds: remodel.api_use_slot_id,
+      certain: !!parseInt(post.api_certain_flag),
+      slotId: parseInt(post.api_slot_id)
+    };
+    if (remodel.api_after_slot) {
+      remodelData.afterSlot = {
         id: remodel.api_after_slot.api_id,
         slotitemId: remodel.api_after_slot.api_slotitem_id,
         locked: !!remodel.api_after_slot.api_locked,
         level: remodel.api_after_slot.api_level
-      },
-      useSlotIds: remodel.api_use_slot_id,
-      certain: !!parseInt(post.api_certain_flag),
-      slotId: parseInt(post.api_slot_id)
-    }]
+      };
+    }
+    return ['/post/v1/remodel', remodelData];
   },
   parseBookShip = (booklist) => {
-    let book = []
+    let book = [];
     for (let ship of booklist.api_list) {
       if (ship.api_state[0][0] === 1) {
         book.push({
@@ -329,7 +332,7 @@ export const
           isDamaged: !!ship.api_state[0][1],
           name: ship.api_name,
           isMarried: !!ship.api_state[0][2]
-        })
+        });
         if (ship.api_state[1] && ship.api_state[1][0] === 1) {
           book.push({
             id: ship.api_table_id[0],
@@ -337,7 +340,7 @@ export const
             isDamaged: !!ship.api_state[1][1],
             name: ship.api_name + '改',
             isMarried: !!ship.api_state[1][2]
-          })
+          });
         }
         if (ship.api_state[2] && ship.api_state[2][0] === 1) {
           book.push({
@@ -346,20 +349,20 @@ export const
             isDamaged: !!ship.api_state[2][1],
             name: ship.api_name + '改二',
             isMarried: !!ship.api_state[2][2]
-          })
+          });
         }
       }
     }
-    return ['/post/v1/book/ship', book]
+    return ['/post/v1/book/ship', book];
   },
   parseBookItem = (itemlist) => {
-    let book = []
+    let book = [];
     for (let item of itemlist.api_list) {
       book.push({
         id: item.api_table_id[0],
         indexNo: item.api_index_no,
         name: item.api_name
-      })
+      });
     }
-    return ['/post/v1/book/item', book]
+    return ['/post/v1/book/item', book];
   }
