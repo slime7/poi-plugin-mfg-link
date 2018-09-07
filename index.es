@@ -29,7 +29,7 @@ import { Row, Col, Grid, FormGroup, FormControl } from 'react-bootstrap';
 const { config, log, getStore, i18n } = window;
 const __ = i18n['poi-plugin-mfg-link'].__.bind(i18n['poi-plugin-mfg-link']);
 
-const MFG_HOST = 'https://myfleet.moe';
+const MFG_HOST = 'https://myfleet.iwmt.org/';
 let [memberId, mfgPw, nicknameId, nickname] = [
   '',
   config.get('plugin.poi-plugin-mfg-sender.mfgpw', ''),
