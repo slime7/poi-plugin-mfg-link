@@ -1,3 +1,14 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import {
+  Row,
+  Col,
+  Grid,
+  FormGroup,
+  FormControl,
+} from 'react-bootstrap';
+import { get } from 'lodash';
 import {
   parseMaterial,
   parseItem,
@@ -351,6 +362,65 @@ const handleGameResponse = (e) => {
 };
 
 // 需要一个密码填写界面
+const MfgConfig = connect(
+  (state, props) => ({
+    value: get(state.config, props.configName, props.defaultVal),
+    configName: props.configName,
+    label: props.label,
+  }),
+)(class mfgConfig extends Component {
+  static propTypes = {
+    label: PropTypes.string,
+    configName: PropTypes.string,
+    value: PropTypes.string,
+  };
+
+  static defaultProps = {
+    label: '',
+    configName: '',
+    value: '',
+  };
+
+  pwChange = () => {
+    const { configName } = this.props;
+    config.set(configName, this.input.value);
+  };
+
+  render() {
+    const { value, label } = this.props;
+    return (
+      <Row>
+        <Col xs={12}>
+          <Grid>
+            <Col xs={12}>
+              <FormGroup>
+                <FormControl
+                  type="password"
+                  value={value}
+                  inputRef={(ref) => {
+                    this.input = ref;
+                  }}
+                  onChange={this.pwChange}
+                  placeholder={label}
+                />
+              </FormGroup>
+            </Col>
+          </Grid>
+        </Col>
+      </Row>
+    );
+  }
+});
+
+export const settingsClass = () => (
+  <div>
+    <MfgConfig
+      label="MFG Password"
+      configName="plugin.poi-plugin-mfg-sender.mfgpw"
+      defaultVal=""
+    />
+  </div>
+);
 
 export const pluginDidLoad = () => {
   window.addEventListener('game.response', handleGameResponse);

@@ -43,7 +43,7 @@ export const parseMaterial = () => {
 export const parseItem = () => {
   const items = getStore('info.equips');
   const newItems = [];
-  for (const itemId in items) {
+  Object.keys(items).forEach((itemId) => {
     const item = {
       id: items[itemId].api_id,
       slotitemId: items[itemId].api_slotitem_id,
@@ -54,21 +54,21 @@ export const parseItem = () => {
       item.alv = items[itemId].api_alv;
     }
     newItems.push(item);
-  }
+  });
   return ['/post/v1/slotitem', newItems];
 };
 export const parseShip = () => {
   const ships = getStore('info.ships');
   const newShips = [];
-  for (const shipId in ships) {
+  Object.keys(ships).forEach((shipId) => {
     newShips.push(formatShip(ships[shipId]));
-  }
+  });
   return ['/post/v2/ship', newShips];
 };
 export const parseDeckport = () => {
   const fleets = getStore('info.fleets');
   const deck = [];
-  for (const fleet of fleets) {
+  fleets.forEach((fleet) => {
     const f = {
       id: fleet.api_id,
       name: fleet.api_name,
@@ -82,7 +82,7 @@ export const parseDeckport = () => {
       };
     }
     deck.push(f);
-  }
+  });
   return ['/post/v1/deckport', deck];
 };
 export const parseBasic = () => {
@@ -118,21 +118,21 @@ export const parseNdock = () => {
 export const parseMapinfo = () => {
   const mapInfo = getStore('info.maps');
   const newMapInfo = [];
-  for (const mapIndex in mapInfo) {
+  Object.keys(mapInfo).forEach((mapIndex) => {
     const map = {
       id: mapInfo[mapIndex].api_id,
       cleared: !!mapInfo[mapIndex].api_cleared,
-      exbossFlag: !!mapInfo[mapIndex].api_exboss_flag
+      exbossFlag: !!mapInfo[mapIndex].api_exboss_flag,
     };
     if (typeof mapInfo[mapIndex].api_defeat_count === 'number') {
       map.defeatedCount = mapInfo[mapIndex].api_defeat_count;
     }
     newMapInfo.push(map);
-  }
+  });
   return ['/post/v1/mapinfo', newMapInfo];
 };
-export const parseMapStart = (mapStart) => {
-  return ['/post/v1/map_start', {
+export const parseMapStart = mapStart => [
+  '/post/v1/map_start', {
     rashinFlag: !!mapStart.api_rashin_flg,
     rashinId: mapStart.api_rashin_id,
     mapAreaId: mapStart.api_maparea_id,
@@ -141,16 +141,15 @@ export const parseMapStart = (mapStart) => {
     eventId: mapStart.api_event_id,
     next: mapStart.api_next,
     bossCellNo: mapStart.api_bosscell_no,
-    bossComp: !!mapStart.api_bosscomp
+    bossComp: !!mapStart.api_bosscomp,
   }];
-};
 export const parseBattleResult = (battleResult, route) => {
   let getShip = [];
   if (battleResult.api_get_ship) {
     getShip = {
       id: battleResult.api_get_ship.api_ship_id,
       stype: battleResult.api_get_ship.api_ship_type,
-      name: battleResult.api_get_ship.api_ship_name
+      name: battleResult.api_get_ship.api_ship_name,
     };
   }
   return ['/post/v1/battle_result', {
@@ -189,7 +188,7 @@ export const parseMapRoute = (routeData, lastRoute) => {
 };
 export const parseQuestList = (quests) => {
   const questList = [];
-  for (const quest of quests) {
+  quests.forEach((quest) => {
     if (quest.api_no) {
       questList.push({
         no: quest.api_no,
@@ -208,7 +207,7 @@ export const parseQuestList = (quests) => {
         progressFlag: quest.api_progress_flag,
       });
     }
-  }
+  });
   return ['/post/v1/questlist', questList];
 };
 export const parseCreateitem = (data, material) => {
@@ -228,18 +227,17 @@ export const parseCreateitem = (data, material) => {
   }
   return ['/post/v1/createitem', create];
 };
-export const parseDeleteKdock = (getShip, dock) => {
-  return ['/post/v1/delete_kdock', {
+export const parseDeleteKdock = (getShip, dock) => [
+  '/post/v1/delete_kdock', {
     kDockId: +dock.api_kdock_id,
     shipId: getShip.api_ship_id,
   }];
-};
 export const parseKdock = (constructionData) => {
   const kdock = getStore('info.constructions');
   const kdockData = [];
   const kdockReq = [];
   const result = [];
-  for (const _kdock of kdock) {
+  kdock.forEach((_kdock) => {
     kdockData.push({
       id: _kdock.api_id,
       shipId: _kdock.api_created_ship_id,
@@ -253,7 +251,7 @@ export const parseKdock = (constructionData) => {
     if (_kdock.api_state === 2) {
       kdockReq.push(kdockData[kdockData.length - 1]);
     }
-  }
+  });
 
   if (constructionData) {
     const constructionTemp = Object.assign({}, constructionData);
@@ -275,7 +273,7 @@ export const parseRemodelSlot = (remodelSlotList) => {
     second: remodelShip,
     list: [],
   };
-  for (const remodelSlot of remodelSlotList) {
+  remodelSlotList.forEach((remodelSlot) => {
     requestData.list.push({
       id: remodelSlot.api_id,
       slotId: remodelSlot.api_slot_id,
@@ -288,7 +286,7 @@ export const parseRemodelSlot = (remodelSlotList) => {
       reqSlotId: remodelSlot.api_req_slot_id,
       slotNum: remodelSlot.api_req_slot_num,
     });
-  }
+  });
   return ['/post/v1/remodel_slot', requestData];
 };
 export const parseMasterRemodel = (remodelDetail, origin) => {
@@ -327,7 +325,7 @@ export const parseRemodel = (remodel, post) => {
 };
 export const parseBookShip = (booklist) => {
   const book = [];
-  for (const ship of booklist.api_list) {
+  booklist.api_list.forEach((ship) => {
     if (ship.api_state[0][0] === 1) {
       book.push({
         id: ship.api_table_id[0],
@@ -355,17 +353,17 @@ export const parseBookShip = (booklist) => {
         });
       }
     }
-  }
+  });
   return ['/post/v1/book/ship', book];
 };
 export const parseBookItem = (itemlist) => {
   const book = [];
-  for (const item of itemlist.api_list) {
+  itemlist.api_list.forEach((item) => {
     book.push({
       id: item.api_table_id[0],
       indexNo: item.api_index_no,
       name: item.api_name,
     });
-  }
+  });
   return ['/post/v1/book/item', book];
 };
