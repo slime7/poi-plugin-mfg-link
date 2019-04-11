@@ -38,7 +38,7 @@ const {
   getStore,
 } = window;
 
-const MFG_HOST = 'https://myfleet.iwmt.org/';
+const MFG_HOST = 'https://myfleet.iwmt.org';
 const mfgPw = config.get('plugin.poi-plugin-mfg-sender.mfgpw', '');
 let [memberId, nicknameId, nickname] = ['', '', ''];
 // let auth, auth2, initPost = false, authSuccess = false;
